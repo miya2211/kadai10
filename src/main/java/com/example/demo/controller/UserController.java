@@ -30,16 +30,19 @@ public class UserController {
     }
 
     @PostMapping("/users")
+    @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestParam("name") String name) {
         userService.create(name);
     }
 
     @PutMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@PathVariable("id") int id, @RequestParam("name") String name) throws Exception {
         userService.update(id, name);
     }
 
     @DeleteMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("id") int id) throws Exception {
         userService.delete(id);
     }
@@ -52,7 +55,8 @@ public class UserController {
                 "error", HttpStatus.NOT_FOUND.getReasonPhrase(),
                 "message", e.getMessage(),
                 "path", request.getRequestURI());
-        return new ResponseEntity(body, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+
     }
 
 }
