@@ -21,12 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(int id) throws Exception {
-        Optional<User> user = userMapper.findById(id);
-        if (user.isPresent()) {
-            return user.get();
-        } else {
-            throw new ResourceNotFoundException("指定されたユーザーが見つかりません。");
-        }
+        return userMapper.findById(id).orElseThrow(() -> new ResourceNotFoundException("指定されたユーザーが見つかりません。"));
     }
 
     @Override
@@ -37,21 +32,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(int id, String name) throws Exception {
         Optional<User> user = userMapper.findById(id);
-        if (user.isPresent()) {
-            userMapper.update(id, name);
-        } else {
-            throw new ResourceNotFoundException("指定されたIDが見つからないので更新できません。");
-        }
+        user.stream().peek(u -> userMapper.update(id, name)).findFirst().orElseThrow(() -> new ResourceNotFoundException("指定されたユーザーが見つかりません。"));
     }
 
     @Override
     public void delete(int id) throws Exception {
         Optional<User> user = userMapper.findById(id);
-        if (user.isPresent()) {
-            userMapper.delete(id);
-        } else {
-            throw new ResourceNotFoundException("指定されたIDが見つからないので削除はできません。");
-        }
+        user.stream().peek(u ->userMapper.delete(id)).findFirst().orElseThrow(() -> new ResourceNotFoundException("指定されたユーザーが見つかりません。"));
     }
 
 }
