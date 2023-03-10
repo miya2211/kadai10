@@ -30,21 +30,21 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestParam("name") String name) {
+    public ResponseEntity<String> createUser(@RequestParam("name") String name) {
         userService.create(name);
+        return ResponseEntity.status(HttpStatus.CREATED).body("ユーザーを登録しました。");
     }
 
     @PutMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable("id") int id, @RequestParam("name") String name) throws Exception {
+    public ResponseEntity<String> updateUser(@PathVariable("id") int id, @RequestParam("name") String name) throws Exception{
         userService.update(id, name);
+        return ResponseEntity.status(HttpStatus.OK).body("ユーザー名を更新しました。");
     }
 
     @DeleteMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable("id") int id) throws Exception {
+    public ResponseEntity<String> deleteUser(@PathVariable("id") int id) throws Exception {
         userService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body("ユーザーを削除しました。");
     }
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
