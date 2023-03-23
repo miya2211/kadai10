@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,13 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<String> createUser(@RequestParam("name") String name) {
-        userService.create(name);
-        return ResponseEntity.status(HttpStatus.CREATED).body("ユーザーを登録しました。");
+            User newUser = userService.create(name);
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(newUser.getId())
+                    .toUri();
+            return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/users/{id}")

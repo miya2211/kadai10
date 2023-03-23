@@ -15,7 +15,7 @@ public interface UserMapper {
     Optional<User> findById(int id);
 
     @Insert("INSERT INTO users(name) VALUES(#{name})")
-    void create(String name);
+    User create(String name);
 
     @Update("UPDATE users SET name = #{name} WHERE id = #{id}")
     void update(int id, String name);

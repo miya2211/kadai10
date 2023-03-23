@@ -10,7 +10,7 @@ public interface UserService {
 
     User findById(int id) throws Exception;
 
-    void create(String name);
+    User create(String name);
 
     void update(int id, String name) throws Exception;
 
