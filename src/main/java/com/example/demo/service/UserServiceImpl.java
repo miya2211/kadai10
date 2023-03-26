@@ -26,7 +26,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(String name) {
-        User newUser = userMapper.create(name);
+        User newUser = new User(0, name);
+        userMapper.create(newUser);
         return newUser;
     }
 
